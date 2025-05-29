@@ -1,6 +1,6 @@
 type AgentPulseProps = {        
   size?: "small" | "medium" | "large";
-  color?: "primary" | "secondary" | "tertiary";
+  color?: "blue" | "green" | "purple";
 };
 
 
