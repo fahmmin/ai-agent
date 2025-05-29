@@ -7,7 +7,7 @@ export async function analyseYouTubeVideo(formData: FormData) {
   const url = formData.get("url")?.toString();
   if (!url) return;
 
-  const videoId = 'abc'; // TODO: fix this
+  const videoId = "abc"; // TODO: fix this
   if (!videoId) return;
 
   // Redirect to the new post

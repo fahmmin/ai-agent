@@ -4,7 +4,6 @@ import "./globals.css";
 import ClientWrapper from "@/components/ClientWrapper";
 import Header from "@/components/Header";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -35,7 +34,6 @@ export default function RootLayout({
           <main>{children}</main>
         </ClientWrapper>
       </body>
-
     </html>
   );
 }
