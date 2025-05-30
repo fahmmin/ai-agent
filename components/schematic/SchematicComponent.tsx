@@ -1,9 +1,23 @@
-import SchematicEmbed from "./SchematicEmbed"
+import SchematicEmbed from "./SchematicEmbed";
+import { getTemporaryAccessToken } from "@/actions/getTemporaryAccessToken";
 
-function SchematicComponent() {
+async function SchematicComponent({ componentId }: { componentId: string }) {
+  if (!componentId) {
+    return null;
+  }
+
+  const accessToken = await getTemporaryAccessToken();
+  console.log("accessToken", accessToken);
+
+  if (!accessToken) {
+    return null;
+  }
+
   return (
-    <div>Schematic Component</div>
-  )
+    <div>
+      <SchematicEmbed componentId={componentId} accessToken={accessToken} />
+    </div>
+  );
 }
 
-export default SchematicComponent
+export default SchematicComponent;
