@@ -1,40 +1,67 @@
-"use client";
+"use server";
 
-import React, { useEffect, useState } from "react";
+import { google } from "googleapis";
 import { VideoDetails } from "@/types/types";
-import { getVideoDetails } from "@/actions/getVideoDetails";
-import Image from "next/image";
 
-function YoutubeVideoDetails({ videoId }: { videoId: string }) {
-  const [video, setVideo] = useState<VideoDetails | null>(null);
+const youtube = google.youtube({
+  version: "v3",
+  auth: process.env.YOUTUBE_API_KEY,
+});
 
-  useEffect(() => {
-    const fetchVideoDetails = async () => {
-      const response = await getVideoDetails(videoId);
-      setVideo(response);
+async function getVideoDetails(videoId: string) {
+  console.log("🎥 Fetching video details for:", videoId);
+
+  try {
+    // Fetch video details and channel details
+    const videoResponse = await youtube.videos.list({
+      part: ["statistics", "snippet"],
+      id: [videoId],
+    });
+
+    const videoDetails = videoResponse.data.items?.[0];
+
+    if (!videoDetails) throw new Error("Video not found");
+
+    // Get channel details including thumbnail
+    const channelResponse = await youtube.channels.list({
+      part: ["snippet", "statistics"],
+      id: [videoDetails.snippet?.channelId || ""],
+      key: process.env.YOUTUBE_API_KEY,
+    });
+
+    const channelDetails = channelResponse.data.items?.[0];
+
+    console.log("✅ Video details fetched successfully");
+
+    const video: VideoDetails = {
+      // Video Info
+      title: videoDetails.snippet?.title || "Unknown Title",
+      thumbnail:
+        videoDetails.snippet?.thumbnails?.maxres?.url ||
+        videoDetails.snippet?.thumbnails?.high?.url ||
+        videoDetails.snippet?.thumbnails?.default?.url ||
+        "",
+      publishedAt:
+        videoDetails.snippet?.publishedAt || new Date().toISOString(),
+
+      // Video Metrics
+      views: Number(videoDetails.statistics?.viewCount) || 0,
+      likes: Number(videoDetails.statistics?.likeCount) || 0,
+      comments: Number(videoDetails.statistics?.commentCount) || 0,
+
+      // Channel Info
+      channel: {
+        title: videoDetails.snippet?.channelTitle || "Unknown Channel",
+        thumbnail: channelDetails?.snippet?.thumbnails?.default?.url || "",
+        subscribers: channelDetails?.statistics?.subscriberCount || "0",
+      },
     };
-    fetchVideoDetails();
-  }, [videoId]);
 
-  if (!video) {
-    return <div>No video details found</div>;
+    return video;
+  } catch (error) {
+    console.error("❌ Error fetching video details:", error);
+    return null;
   }
-
-  return (
-    <div className="@container bg-white rounded-xl">
-      <div className="flex flex-col @md:flex-row gap-8">
-        <div className="flex-shrink-0 @md:w-[280px]">
-          <Image
-            src={video.thumbnail}
-            alt={video.title}
-            width={500}
-            height={500} 
-            className="rounded-xl"
-          />
-        </div>
-      </div>
-    </div>
-  );
 }
 
-export default YoutubeVideoDetails;
+export default getVideoDetails;
