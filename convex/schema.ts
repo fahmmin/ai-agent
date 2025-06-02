@@ -6,41 +6,39 @@ export default defineSchema({
     videoId: v.string(),
     userId: v.string(),
   })
-    .index("by_user", ["userId"])
-    .index("by_videoId", ["videoId"])
-    .index("by_user_videoId", ["userId", "videoId"]),
+    .index("by_user_id", ["userId"])
+    .index("by_video_id", ["videoId"])
+    .index("by_user_and_video", ["userId", "videoId"]),
 
-
-transcript: defineTable({
+  transcript: defineTable({
     videoId: v.string(),
     userId: v.string(),
-    transcript: v.array(v.object({
+    transcript: v.array(
+      v.object({
         text: v.string(),
-        timestamp: v.number(),
-    })),
-})
-    .index("by_user", ["userId"])
-    .index("by_videoId", ["videoId"])
-    .index("by_user_videoId", ["userId", "videoId"]),
+        timestamp: v.string(),
+      })
+    ),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_video_id", ["videoId"])
+    .index("by_user_and_video", ["userId", "videoId"]),
 
-
-images: defineTable({
-    storageId: v.string(),
+  images: defineTable({
+    storageId: v.id("_storage"),
     userId: v.string(),
     videoId: v.string(),
-    createdAt: v.number(),
-})
-    .index("by_user", ["userId"])
-    .index("by_videoId", ["videoId"])
-    .index("by_user_videoId", ["userId", "videoId"]),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_video_id", ["videoId"])
+    .index("by_user_and_video", ["userId", "videoId"]),
 
-
-titles: defineTable({
+  titles: defineTable({
     videoId: v.string(),
     userId: v.string(),
     title: v.string(),
-})
-    .index("by_user", ["userId"])
-    .index("by_videoId", ["videoId"])
-    .index("by_user_videoId", ["userId", "videoId"]),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_video_id", ["videoId"])
+    .index("by_user_and_video", ["userId", "videoId"]),
 });
