@@ -9,6 +9,8 @@ import YoutubeVideoDetails from "@/components/YoutubeVideoDetails";
 import TitleGeneration from "@/components/TitleGeneration";
 import Transcription from "@/components/Transcription";
 import ThumbnailGeneration from "@/components/ThumbnailGeneration";
+import AiAgentChat from "@/components/AiAgentChat";
+
 
  function AnalysisPage() {
   const params = useParams<{ videoId: string }>();
@@ -36,8 +38,7 @@ import ThumbnailGeneration from "@/components/ThumbnailGeneration";
           <p>Action Items</p>
         </div>
         <div className="order-1 lg:order-2 lg:sticky lg:top-20 h-[500px] md:h-[calc(100vh-6rem)]">
-          <p>Right Side</p>
-          <p>Chat</p>
+          <AiAgentChat videoId={videoId} />
         </div>
       </div>
     </div>
