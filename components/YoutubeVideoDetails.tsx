@@ -91,7 +91,6 @@ function YoutubeVideoDetails({ videoId }: { videoId: string }) {
                 <ThumbsUp className="w-4 h-4 text-gray-600" />
                 <p className="text-sm text-gray-600">Likes</p>
               </div>
-              <p className="font-medium text-gray-900">{video.likes}</p>
             </div>
 
             <div className="bg-gray-50 rounded-lg p-3 transition-all duration-300 hover:bg-gray-100">
