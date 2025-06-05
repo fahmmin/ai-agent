@@ -1,10 +1,8 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import Usage from "./Usage";
 import { FeatureFlag } from "@/features/flags";
-import Image from "next/image";
-import { cache } from "react";
+
 import { useSchematicEntitlement } from "@schematichq/schematic-react";
 import { useState } from "react";
 
@@ -14,7 +12,7 @@ interface TranscriptionEntry {
 }
 
 function Transcription({ videoId }: { videoId: string }) {
-  const [transcriptState, setTranscriptState] = useState<{
+  const [transcriptState] = useState<{
     transcript: TranscriptionEntry[];
     cache: string;
   } | null>(null);
@@ -41,7 +39,7 @@ function Transcription({ videoId }: { videoId: string }) {
             ):(
               <p>Transcription</p>
             )}
-              <p>Transcription</p>
+              <p>{videoId}</p>
             </div>)
           :
             <div>

@@ -1,9 +1,7 @@
 "use server";
 
-import { NextResponse } from "next/server";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText, tool } from "ai";
-import { currentUser } from "@clerk/nextjs/server";
 import { getVideoDetails } from "@/actions/getVideoDetails";
 import fetchTranscript from "@/tools/fetchTranscript";
 import { generateImage } from "@/tools/generateImage";
@@ -19,11 +17,6 @@ const model = google("gemini-1.5-flash");
 
 export async function POST(req: Request) {
   const { messages, videoId } = await req.json();
-  // const user = useUser();
-
-  // if (!user) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
 
   const videoDetails = await getVideoDetails(videoId);
 
