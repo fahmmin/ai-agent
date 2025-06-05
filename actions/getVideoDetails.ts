@@ -30,6 +30,7 @@ export async function getVideoDetails(videoId: string): Promise<VideoDetails> {
 
     const video: VideoDetails = {
       title: videoDetails.snippet?.title || "Unknown Title",
+      description: videoDetails.snippet?.description || "",
       thumbnail:
         videoDetails.snippet?.thumbnails?.default?.url ||
         videoDetails.snippet?.thumbnails?.maxres?.url ||
@@ -39,7 +40,6 @@ export async function getVideoDetails(videoId: string): Promise<VideoDetails> {
         videoDetails.snippet?.publishedAt || new Date().toISOString(),
 
       views: Number(videoDetails.statistics?.viewCount) || 0,
-      likes: Number(videoDetails.statistics?.likeCount) || 0,
       comments: Number(videoDetails.statistics?.commentCount) || 0,
       channel: {
         title: channelDetails.snippet?.title || "Unknown Channel",
